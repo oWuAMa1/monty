@@ -508,6 +508,37 @@ void pstr(stack_t **stack, unsigned int line_number)
     putchar('\n');
 }
 /**
+ * rotl - Rotates the stack to the top.
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: The top element of the stack becomes the last one,
+ * and the second top element of the stack becomes the first one.
+ * rotl never fails.
+ */
+void rotl(stack_t **stack, unsigned int line_number)
+{
+    stack_t *current = *stack;
+    stack_t *new_top;
+
+    (void)line_number;
+
+    if (*stack == NULL || (*stack)->next == NULL)
+        return;
+
+    new_top = (*stack)->next;
+    new_top->prev = NULL;
+
+    while (current->next != NULL)
+        current = current->next;
+
+    current->next = *stack;
+    (*stack)->prev = current;
+    (*stack)->next = NULL;
+
+    *stack = new_top;
+}
+/**
  * execute_instruction - Executes an instruction
  * @opcode: The opcode
  * @stack: The stack
@@ -528,6 +559,7 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
         {"mod", mod},
         {"pchar", pchar},
         {"pstr", pstr},
+        {"rotl", rotl},
         {"nop", nop},
         {NULL, NULL}
     };

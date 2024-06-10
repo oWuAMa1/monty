@@ -480,11 +480,33 @@ void pchar(stack_t **stack, unsigned int line_number)
     putchar((*stack)->n);
     putchar('\n');
 
-/*  (*stack) = (*stack)->next;
-    if (*stack != NULL)
-        (*stack)->prev = NULL;*/
 }
+/**
+ * pstr - Prints the string starting from the top of the stack.
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: Treats the integer stored in each element of the stack as the
+ * ASCII value of the character to be printed. The string stops when either:
+ * the stack is over, the value of the element is 0, or the value of the element
+ * is not in the ASCII table. If the stack is empty, prints only a new line.
+ */
+void pstr(stack_t **stack, unsigned int line_number)
+{
+    stack_t *current = *stack;
 
+    (void)line_number;
+
+    while (current != NULL)
+    {
+        if (current->n <= 0 || current->n > 127)
+            break;
+        putchar(current->n);
+        current = current->next;
+    }
+
+    putchar('\n');
+}
 /**
  * execute_instruction - Executes an instruction
  * @opcode: The opcode
@@ -505,6 +527,7 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
         {"mul", mul},
         {"mod", mod},
         {"pchar", pchar},
+        {"pstr", pstr},
         {"nop", nop},
         {NULL, NULL}
     };

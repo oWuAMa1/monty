@@ -293,6 +293,32 @@ void swap(stack_t **stack, unsigned int line_number)
     first->prev = second;
     *stack = second;
 }
+/**
+ * add - Adds the top two elements of the stack.
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: Adds the top two elements of the stack. If the stack contains
+ * less than two elements, prints an error message and exits with EXIT_FAILURE.
+ * The result is stored in the second top element of the stack, and the top
+ * element is removed, so that at the end the stack is one element shorter.
+ */
+void add(stack_t **stack, unsigned int line_number)
+{
+    stack_t *temp;
+
+    if (*stack == NULL || (*stack)->next == NULL)
+    {
+        fprintf(stderr, "L%u: can't add, stack too short\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    temp = *stack;
+    (*stack)->next->n += (*stack)->n;
+    *stack = (*stack)->next;
+    (*stack)->prev = NULL;
+    free(temp);
+}
 
 /**
  * execute_instruction - Executes an instruction
@@ -308,6 +334,7 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
         {"pint", pint},
         {"pop", pop},
         {"swap", swap},
+        {"add", add},
         {NULL, NULL}
     };
 
@@ -324,4 +351,5 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
 
     unknown_instruction_error(opcode, line_number);
 }
+
 #endif /* MONTY_H */

@@ -415,6 +415,42 @@ void mul(stack_t **stack, unsigned int line_number)
     (*stack)->prev = NULL;
     free(temp);
 }
+/**
+ * mod - Computes the remainder of the division of the second top element
+ *       of the stack by the top element of the stack.
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: If the stack contains less than two elements, prints an error
+ * message and exits with status EXIT_FAILURE. If the top element of the
+ * stack is 0, prints an error message and exits with status EXIT_FAILURE.
+ * The result is stored in the second top element of the stack, and the top
+ * element is removed. At the end:
+ * - The top element of the stack contains the result.
+ * - The stack is one element shorter.
+ */
+void mod(stack_t **stack, unsigned int line_number)
+{
+    stack_t *temp;
+
+    if (*stack == NULL || (*stack)->next == NULL)
+    {
+        fprintf(stderr, "L%u: can't mod, stack too short\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    if ((*stack)->n == 0)
+    {
+        fprintf(stderr, "L%u: division by zero\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    temp = *stack;
+    (*stack)->next->n %= (*stack)->n;
+    *stack = (*stack)->next;
+    (*stack)->prev = NULL;
+    free(temp);
+}
 
 /**
  * execute_instruction - Executes an instruction
@@ -434,6 +470,7 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
         {"sub", sub},
 				{"div", div_op},
         {"mul", mul},
+        {"mod", mod},
         {"nop", nop},
         {NULL, NULL}
     };

@@ -144,7 +144,29 @@ void free_stack(stack_t *stack)
         free(temp);
                 }
 }
+/**
+ * is_number - Checks if a string is a valid integer.
+ * @str: The string to be checked.
+ *
+ * Return: 1 if the string is a valid integer, 0 otherwise.
+ */
+int is_number(const char *str)
+{
+    if (str == NULL || *str == '\0')
+        return 0;
 
+    if (*str == '-' || *str == '+') /* Check for optional sign */
+        str++;
+
+    while (*str)
+    {
+        if (!isdigit(*str))
+            return 0;
+        str++;
+    }
+
+    return 1;
+}
 /**
  * is_integer - Checks if a string represents an integer
  * @str: The string to be checked
@@ -167,7 +189,7 @@ int is_integer(char *str)
                 }
                 return (1);
 }
-
+extern int mode;
 /**
  * push - Pushes an element to the stack
  * @stack: The stack
@@ -570,6 +592,34 @@ void rotr(stack_t **stack, unsigned int line_number)
     /* Update stack top */
     *stack = new_top;
 }
+int mode = 0;
+/**
+ * stack_mode - Sets the format of the data to a stack (LIFO).
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: The default behavior of the program.
+ */
+void stack_mode(stack_t **stack, unsigned int line_number)
+{
+    (void)stack;
+    (void)line_number;
+    mode = 0;
+}
+
+/**
+ * queue_mode - Sets the format of the data to a queue (FIFO).
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: The top of the stack becomes the front of the queue.
+ */
+void queue_mode(stack_t **stack, unsigned int line_number)
+{
+    (void)stack;
+    (void)line_number;
+    mode = 1;
+}
 /**
  * execute_instruction - Executes an instruction
  * @opcode: The opcode
@@ -593,6 +643,8 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
         {"pstr", pstr},
         {"rotl", rotl},
         {"rotr", rotr},
+        {"stack", stack_mode}, /* Add stack opcode */
+        {"queue", queue_mode}, /* Add queue opcode */
         {"nop", nop},
         {NULL, NULL}
     };

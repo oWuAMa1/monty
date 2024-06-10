@@ -331,6 +331,31 @@ void nop(stack_t **stack, unsigned int line_number)
     (void)stack;
     (void)line_number;
 }
+/**
+ * sub - Subtracts the top element of the stack from the second top element.
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: The result is stored in the second top element of the stack,
+ * and the top element is removed. If the stack contains less than two elements,
+ * an error is printed, and the program exits.
+ */
+void sub(stack_t **stack, unsigned int line_number)
+{
+    stack_t *temp;
+
+    if (*stack == NULL || (*stack)->next == NULL)
+    {
+        fprintf(stderr, "L%u: can't sub, stack too short\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    temp = *stack;
+    (*stack)->next->n -= (*stack)->n;
+    *stack = (*stack)->next;
+    (*stack)->prev = NULL;
+    free(temp);
+}
 
 /**
  * execute_instruction - Executes an instruction
@@ -347,6 +372,7 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
         {"pop", pop},
         {"swap", swap},
         {"add", add},
+        {"sub", sub},
         {"nop", nop},
         {NULL, NULL}
     };

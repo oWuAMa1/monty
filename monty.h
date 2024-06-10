@@ -222,6 +222,25 @@ void pall(stack_t **stack, unsigned int line_number)
 }
 
 /**
+ * pint - Prints the value at the top of the stack.
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: Prints the value at the top of the stack, followed by a new line.
+ * If the stack is empty, prints an error message and exits with EXIT_FAILURE.
+ */
+void pint(stack_t **stack, unsigned int line_number)
+{
+    if (*stack == NULL)
+    {
+        fprintf(stderr, "L%u: can't pint, stack empty\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("%d\n", (*stack)->n);
+}
+
+/**
  * execute_instruction - Executes an instruction
  * @opcode: The opcode
  * @stack: The stack
@@ -229,24 +248,25 @@ void pall(stack_t **stack, unsigned int line_number)
  */
 void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number)
 {
-                instruction_t instructions[] = {
+    instruction_t instructions[] = {
         {"push", push},
         {"pall", pall},
+        {"pint", pint},
         {NULL, NULL}
-                };
+    };
 
-                int i;
+    int i;
 
-                for (i = 0; instructions[i].opcode != NULL; i++)
-                {
+    for (i = 0; instructions[i].opcode != NULL; i++)
+    {
         if (strcmp(opcode, instructions[i].opcode) == 0)
         {
-                        instructions[i].f(stack, line_number);
-                        return;
+            instructions[i].f(stack, line_number);
+            return;
         }
-                }
+    }
 
-                unknown_instruction_error(opcode, line_number);
+    unknown_instruction_error(opcode, line_number);
 }
 
 #endif /* MONTY_H */

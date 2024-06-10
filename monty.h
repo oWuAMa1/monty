@@ -405,7 +405,7 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
         {"swap", swap},
         {"add", add},
         {"sub", sub},
-				{"div_op", div_op},
+				{"div", div_op},
         {"nop", nop},
         {NULL, NULL}
     };

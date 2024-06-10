@@ -451,6 +451,39 @@ void mod(stack_t **stack, unsigned int line_number)
     (*stack)->prev = NULL;
     free(temp);
 }
+/**
+ * pchar - Prints the character at the top of the stack.
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: If the stack is empty, prints an error message and exits with
+ * status EXIT_FAILURE. If the integer stored at the top of the stack is out
+ * of the ASCII range, prints an error message and exits with status
+ * EXIT_FAILURE. Otherwise, prints the character represented by the integer
+ * value at the top of the stack followed by a newline character. Updates the
+ * stack accordingly.
+ */
+void pchar(stack_t **stack, unsigned int line_number)
+{
+    if (*stack == NULL)
+    {
+        fprintf(stderr, "L%u: can't pchar, stack empty\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    if ((*stack)->n < 0 || (*stack)->n > 127)
+    {
+        fprintf(stderr, "L%u: can't pchar, value out of range\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    putchar((*stack)->n);
+    putchar('\n');
+
+    (*stack) = (*stack)->next;
+    if (*stack != NULL)
+        (*stack)->prev = NULL;
+}
 
 /**
  * execute_instruction - Executes an instruction
@@ -471,6 +504,7 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
 				{"div", div_op},
         {"mul", mul},
         {"mod", mod},
+        {"pchar", pchar},
         {"nop", nop},
         {NULL, NULL}
     };

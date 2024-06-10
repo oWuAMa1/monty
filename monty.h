@@ -480,9 +480,9 @@ void pchar(stack_t **stack, unsigned int line_number)
     putchar((*stack)->n);
     putchar('\n');
 
-    (*stack) = (*stack)->next;
+/*  (*stack) = (*stack)->next;
     if (*stack != NULL)
-        (*stack)->prev = NULL;
+        (*stack)->prev = NULL;*/
 }
 
 /**

@@ -239,6 +239,31 @@ void pint(stack_t **stack, unsigned int line_number)
 
     printf("%d\n", (*stack)->n);
 }
+/**
+ * pop - Removes the top element of the stack.
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: Removes the top element of the stack. If the stack is empty,
+ * prints an error message and exits with EXIT_FAILURE.
+ */
+void pop(stack_t **stack, unsigned int line_number)
+{
+    stack_t *temp;
+
+    if (*stack == NULL)
+    {
+        fprintf(stderr, "L%u: can't pop an empty stack\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    temp = *stack;
+    *stack = (*stack)->next;
+    if (*stack != NULL)
+        (*stack)->prev = NULL;
+    free(temp);
+}
+
 
 /**
  * execute_instruction - Executes an instruction
@@ -252,6 +277,7 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
         {"push", push},
         {"pall", pall},
         {"pint", pint},
+        {"pop", pop},
         {NULL, NULL}
     };
 
@@ -268,5 +294,4 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
 
     unknown_instruction_error(opcode, line_number);
 }
-
 #endif /* MONTY_H */

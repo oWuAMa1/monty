@@ -319,6 +319,18 @@ void add(stack_t **stack, unsigned int line_number)
     (*stack)->prev = NULL;
     free(temp);
 }
+/**
+ * nop - Doesn’t do anything.
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: This function does nothing.
+ */
+void nop(stack_t **stack, unsigned int line_number)
+{
+    (void)stack;
+    (void)line_number;
+}
 
 /**
  * execute_instruction - Executes an instruction
@@ -335,6 +347,7 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
         {"pop", pop},
         {"swap", swap},
         {"add", add},
+        {"nop", nop},
         {NULL, NULL}
     };
 
@@ -351,5 +364,4 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
 
     unknown_instruction_error(opcode, line_number);
 }
-
 #endif /* MONTY_H */

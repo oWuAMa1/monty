@@ -9,6 +9,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <ctype.h>
+#define BUFFER_SIZE 1024
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)

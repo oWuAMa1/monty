@@ -263,7 +263,36 @@ void pop(stack_t **stack, unsigned int line_number)
         (*stack)->prev = NULL;
     free(temp);
 }
+/**
+ * swap - Swaps the top two elements of the stack.
+ * @stack: Double pointer to the top of the stack.
+ * @line_number: Line number where the instruction appears.
+ *
+ * Description: Swaps the top two elements of the stack. If the stack contains
+ * less than two elements, prints an error message and exits with EXIT_FAILURE.
+ */
+void swap(stack_t **stack, unsigned int line_number)
+{
+    stack_t *first, *second;
 
+    if (*stack == NULL || (*stack)->next == NULL)
+    {
+        fprintf(stderr, "L%u: can't swap, stack too short\n", line_number);
+        exit(EXIT_FAILURE);
+    }
+
+    first = *stack;
+    second = (*stack)->next;
+
+    first->next = second->next;
+    if (second->next != NULL)
+        second->next->prev = first;
+
+    second->prev = first->prev;
+    second->next = first;
+    first->prev = second;
+    *stack = second;
+}
 
 /**
  * execute_instruction - Executes an instruction
@@ -278,6 +307,7 @@ void execute_instruction(char *opcode, stack_t **stack, unsigned int line_number
         {"pall", pall},
         {"pint", pint},
         {"pop", pop},
+        {"swap", swap},
         {NULL, NULL}
     };
 

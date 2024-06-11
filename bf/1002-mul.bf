@@ -1,16 +1,22 @@
-,> ,<       // Read two digits and store them in cell 0 and cell 1
-[->+>+<<]   // Move the value of cell 0 to cell 2 and cell 3, and clear cell 0
->>[-<<+>>]  // Move the value of cell 2 back to cell 0 and clear cell 2
-<           // Move to cell 1
-[           // Loop cell 1 times
-  ->        // Decrement cell 1
-  <[->+<]   // Add cell 0 to cell 2
-  >>        // Move to cell 3
-  -         // Decrement cell 3
-  <[->+<]   // Add cell 0 to cell 2
-  <         // Move to cell 1
-]           // End of loop
->[-<+>]     // Move the value of cell 2 to cell 1 and clear cell 2
-[-]         // Clear cell 1
-<           // Move to cell 0
-.           // Print the result from cell 0
+,>              // Read first digit and move to next cell
+,               // Read second digit
+<               // Move back to the first cell
+[               // While cell 0 is not 0
+  ->+>+<<       // Move its value to cells 1 and 2
+]
+>>              // Move to the third cell
+[-<+>]          // Transfer value from cell 2 to cell 1
+<               // Move to cell 1
+[               // While cell 1 is not 0
+  ->[<+>-]      // Transfer its value to cell 0 one by one and move the result to cell 2
+  <             // Move back to cell 0
+  [->+<]        // Add cell 0 value to cell 2
+  >>            // Move to cell 2
+  -             // Decrement cell 2
+  <[->+<]       // Add cell 0 value to cell 2 again
+  <             // Move back to cell 1
+]               // End loop
+>[-<+>]         // Transfer value from cell 2 to cell 1
+[-]             // Clear cell 1
+<               // Move back to cell 0
+.               // Print result
